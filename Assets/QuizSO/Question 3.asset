@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9335525468b5a1f44bc2a1c0938533ac, type: 3}
   m_Name: Question 3
   m_EditorClassIdentifier: 
-  question: What does "delta time" represent in game programming?
+  question: 3. What does "delta time" represent in game programming?
   answers:
   - The total time since the game started
   - The time between the current and previous frame (frame time)

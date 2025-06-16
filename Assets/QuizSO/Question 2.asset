@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9335525468b5a1f44bc2a1c0938533ac, type: 3}
   m_Name: Question 2
   m_EditorClassIdentifier: 
-  question: Which of these is a common collision detection method for 2D games?
+  question: 2. Which of these is a common collision detection method for 2D games?
   answers:
-  - Ray casting
   - AABB (Axis-Aligned Bounding Box)
+  - Ray casting
   - Photon mapping
   - Z-buffering
-  correctAnswer: 1
+  correctAnswer: 0

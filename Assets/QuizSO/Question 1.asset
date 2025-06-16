@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9335525468b5a1f44bc2a1c0938533ac, type: 3}
   m_Name: Question 1
   m_EditorClassIdentifier: 
-  question: What is the primary purpose of a game loop?
+  question: 1. What is the primary purpose of a game loop?
   answers:
   - To load all game assets at startup
   - To handle input, update game logic, and render frames repeatedly

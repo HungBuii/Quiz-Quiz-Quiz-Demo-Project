@@ -9,7 +9,7 @@ public class QuizSystem : MonoBehaviour
 {
     [Header("Quizzes")]
     [SerializeField] private List<QuizSO> quizzes = new List<QuizSO>();
-    private int currentQuiz;
+    private int currentQuiz = 0;
 
     [Header("Question")]
     [SerializeField] private TextMeshProUGUI question;
@@ -22,22 +22,30 @@ public class QuizSystem : MonoBehaviour
     [SerializeField] private Sprite defaultAnswerSprite;
     [SerializeField] private Sprite correctAnswerSprite;
 
-    private float time;
+    [Header("Time")]
+    [SerializeField] private Image timer;
+    TimerSystem timerSystem;
 
 
     void Awake()
     {
-
+        timerSystem = FindObjectOfType<TimerSystem>();
     }
 
     private void Start()
     {
-        DisplayNextQuiz();
+        DisplayQuiz();
     }
 
     private void Update()
     {
-        
+        timer.fillAmount = timerSystem.fillAmount;
+        if (timerSystem.loadNextQuestion)
+        {
+            timerSystem.loadNextQuestion = false;
+            currentQuiz++;
+            DisplayNextQuiz();
+        }
     }
 
     void DisplayQuiz()
@@ -48,8 +56,9 @@ public class QuizSystem : MonoBehaviour
         {
             buttons[i].GetComponentInChildren<TextMeshProUGUI>().text = quizzes[currentQuiz].GetAnswer(i).ToString();
         }
-        
+
         correctAnswer = quizzes[currentQuiz].GetCorrectAnswer();
+        SetButtonState();
     }
 
     void DisplayNextQuiz()
@@ -72,6 +81,14 @@ public class QuizSystem : MonoBehaviour
         {
             buttons[correctAnswer].GetComponent<Image>().sprite = correctAnswerSprite;
             question.text = quizzes[currentQuiz].GetAnswer(correctAnswer).ToString();
+        }
+    }
+
+    public void SetButtonState()
+    {
+        for (int i = 0; i < buttons.Count; i++)
+        {
+            buttons[i].GetComponent<Image>().sprite = defaultAnswerSprite;
         }
     }
 
