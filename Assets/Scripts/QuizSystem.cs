@@ -26,25 +26,26 @@ public class QuizSystem : MonoBehaviour
     [SerializeField] private Image timer;
     TimerSystem timerSystem;
 
+    // player answered or not?
+    public bool isAnswered = false;
 
     void Awake()
     {
         timerSystem = FindObjectOfType<TimerSystem>();
     }
 
-    private void Start()
-    {
-        DisplayQuiz();
-    }
+    // private void Start()
+    // {
+    //     DisplayNextQuiz();
+    // }
 
     private void Update()
     {
         timer.fillAmount = timerSystem.fillAmount;
         if (timerSystem.loadNextQuestion)
         {
-            timerSystem.loadNextQuestion = false;
-            currentQuiz++;
             DisplayNextQuiz();
+            timerSystem.loadNextQuestion = false;
         }
     }
 
@@ -65,7 +66,8 @@ public class QuizSystem : MonoBehaviour
     {
         if (currentQuiz >= 0 && currentQuiz <= 4)
         {
-            DisplayQuiz();
+            DisplayQuiz();  
+            currentQuiz++;
         }
 
     }
@@ -76,11 +78,13 @@ public class QuizSystem : MonoBehaviour
         {
             buttons[index].GetComponent<Image>().sprite = correctAnswerSprite;
             question.text = "Correct";
+            isAnswered = true;
         }
         else
         {
             buttons[correctAnswer].GetComponent<Image>().sprite = correctAnswerSprite;
-            question.text = quizzes[currentQuiz].GetAnswer(correctAnswer).ToString();
+            question.text = quizzes[currentQuiz-1].GetAnswer(correctAnswer).ToString();
+            isAnswered = true;
         }
     }
 

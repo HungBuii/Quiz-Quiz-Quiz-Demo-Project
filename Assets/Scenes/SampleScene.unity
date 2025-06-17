@@ -729,7 +729,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1064eb77f354c0744bdf335be8139f7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  completeAnswerTime: 8
+  completeAnswerTime: 10
+  correctAnswerTime: 4
   fillAmount: 0
   loadNextQuestion: 0
 --- !u!4 &1087503404
