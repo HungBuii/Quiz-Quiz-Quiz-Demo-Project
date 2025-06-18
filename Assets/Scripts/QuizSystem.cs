@@ -10,6 +10,7 @@ public class QuizSystem : MonoBehaviour
     [Header("Quizzes")]
     [SerializeField] private List<QuizSO> quizzes = new List<QuizSO>();
     private int currentQuiz = 0;
+    public bool completeQuiz = false;
 
     [Header("Question")]
     [SerializeField] private TextMeshProUGUI question;
@@ -17,6 +18,7 @@ public class QuizSystem : MonoBehaviour
     [Header("Button Answer")]
     [SerializeField] private List<Button> buttons = new List<Button>();
     private int correctAnswer;
+    private bool isAnswered;
 
     [Header("Sprite Button")]
     [SerializeField] private Sprite defaultAnswerSprite;
@@ -26,18 +28,25 @@ public class QuizSystem : MonoBehaviour
     [SerializeField] private Image timer;
     TimerSystem timerSystem;
 
-    // player answered or not?
-    public bool isAnswered = false;
+    [Header("Score")]
+    [SerializeField] private TextMeshProUGUI scoreText;
+    ScoreSystem scoreSystem;
+
+    [Header("Slider")]
+    [SerializeField] private Slider sliderNumberQuiz;
 
     void Awake()
     {
         timerSystem = FindObjectOfType<TimerSystem>();
+        scoreSystem = FindObjectOfType<ScoreSystem>();
+        sliderNumberQuiz.maxValue = quizzes.Count;
+        sliderNumberQuiz.value = 0; 
     }
 
-    // private void Start()
-    // {
-    //     DisplayNextQuiz();
-    // }
+    private void Start()
+    {
+        scoreText.text = "Score: 0%";
+    }
 
     private void Update()
     {
@@ -59,40 +68,60 @@ public class QuizSystem : MonoBehaviour
         }
 
         correctAnswer = quizzes[currentQuiz].GetCorrectAnswer();
-        SetButtonState();
+        SetButtonSpriteState();
     }
 
     void DisplayNextQuiz()
     {
         if (currentQuiz >= 0 && currentQuiz <= 4)
         {
-            DisplayQuiz();  
+            DisplayQuiz();
+            isAnswered = true;
+            SetButtonState(isAnswered);
             currentQuiz++;
+            sliderNumberQuiz.value = currentQuiz;
+        }
+        else
+        {
+            completeQuiz = true;
         }
 
     }
 
     public void AnswerUserClick(int index)
     {
-        if (index == correctAnswer)
+        if (isAnswered)
         {
-            buttons[index].GetComponent<Image>().sprite = correctAnswerSprite;
-            question.text = "Correct";
-            isAnswered = true;
-        }
-        else
-        {
-            buttons[correctAnswer].GetComponent<Image>().sprite = correctAnswerSprite;
-            question.text = quizzes[currentQuiz-1].GetAnswer(correctAnswer).ToString();
-            isAnswered = true;
+            if (index == correctAnswer)
+            {
+                buttons[index].GetComponent<Image>().sprite = correctAnswerSprite;
+                question.text = "Correct";
+                scoreSystem.Bonus();
+                scoreText.text = "Score: " + scoreSystem.CurrentScore.ToString() + "%";
+            }
+            else
+            {
+                buttons[correctAnswer].GetComponent<Image>().sprite = correctAnswerSprite;
+                question.text = quizzes[currentQuiz - 1].GetAnswer(correctAnswer).ToString();
+            }
+            isAnswered = false;
+            SetButtonState(isAnswered);
         }
     }
 
-    public void SetButtonState()
+    public void SetButtonSpriteState()
     {
         for (int i = 0; i < buttons.Count; i++)
         {
             buttons[i].GetComponent<Image>().sprite = defaultAnswerSprite;
+        }
+    }
+
+    public void SetButtonState(bool state)
+    {
+        for (int i = 0; i < buttons.Count; i++)
+        {
+            buttons[i].interactable = state;
         }
     }
 
