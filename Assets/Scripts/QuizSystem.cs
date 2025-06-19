@@ -18,7 +18,7 @@ public class QuizSystem : MonoBehaviour
     [Header("Button Answer")]
     [SerializeField] private List<Button> buttons = new List<Button>();
     private int correctAnswer;
-    private bool isAnswered;
+    private bool canAnswered;
 
     [Header("Sprite Button")]
     [SerializeField] private Sprite defaultAnswerSprite;
@@ -76,8 +76,8 @@ public class QuizSystem : MonoBehaviour
         if (currentQuiz >= 0 && currentQuiz <= 4)
         {
             DisplayQuiz();
-            isAnswered = true;
-            SetButtonState(isAnswered);
+            canAnswered = true;
+            SetButtonState(canAnswered);
             currentQuiz++;
             sliderNumberQuiz.value = currentQuiz;
         }
@@ -90,7 +90,7 @@ public class QuizSystem : MonoBehaviour
 
     public void AnswerUserClick(int index)
     {
-        if (isAnswered)
+        if (canAnswered)
         {
             if (index == correctAnswer)
             {
@@ -104,8 +104,8 @@ public class QuizSystem : MonoBehaviour
                 buttons[correctAnswer].GetComponent<Image>().sprite = correctAnswerSprite;
                 question.text = quizzes[currentQuiz - 1].GetAnswer(correctAnswer).ToString();
             }
-            isAnswered = false;
-            SetButtonState(isAnswered);
+            canAnswered = false;
+            SetButtonState(canAnswered);
         }
     }
 
